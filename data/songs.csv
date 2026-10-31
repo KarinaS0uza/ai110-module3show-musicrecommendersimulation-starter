@@ -9,3 +9,13 @@ id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
 8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
 9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
 10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+11,To the Bone,Pamungkas,pop,happy,0.73,140,0.94,0.67,0.51
+12,Shouldn't Be,Luke Chiang,indie pop,moody,0.29,125,0.30,0.65,0.74
+13,BIBI Vengeance,BIBI,k-pop,intense,0.75,100,0.41,0.44,0.03
+14,Baby Powder,Jenevieve,r&b,chill,0.45,78,0.73,0.80,0.24
+15,Perspective,Cafuné,indie pop,happy,0.68,141,0.70,0.61,0.38
+16,The Drug In Me Is Reimagined,Falling In Reverse,rock,melancholic,0.40,100,0.11,0.50,0.67
+17,Slow,Jackson Wang & Ciara,r&b,romantic,0.59,116,0.56,0.86,0.10
+18,The Emptiness Machine,Linkin Park,rock,intense,0.87,184,0.81,0.47,0.02
+19,All of My Life,Park Won,ballad,romantic,0.35,136,0.23,0.40,0.75
+20,Goodbye,Park Hyo Shin,ballad,melancholic,0.33,129,0.24,0.41,0.26

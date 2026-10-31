@@ -21,16 +21,18 @@ Prompts:
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
+This recommender compares each song with the listener's preferred genre, mood,
+and energy level. A song earns 2 points when its genre matches the listener's
+choice and 1 point when its mood matches. It can also earn up to 1 additional
+point for energy: a song at the listener's exact target energy receives the
+full point, while songs farther from that target receive less. A difference of
+0.5 or more receives no energy points.
 
-Prompts:  
-
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
-
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+After every song has been scored, the recommender sorts the catalog from the
+highest score to the lowest and returns the requested number of top songs. It
+also records which matches contributed to each score so the listener can see
+why a song was recommended. This is a fixed, content-based scoring system; it
+does not learn from listening history or from the behavior of other users.
 
 ---
 
