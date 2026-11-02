@@ -1,21 +1,29 @@
-id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
-1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18
-2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71
-3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10
-4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86
-5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05
-6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92
-7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89
-8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
-9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
-10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
-11,To the Bone,Pamungkas,pop,happy,0.73,140,0.94,0.67,0.51
-12,Shouldn't Be,Luke Chiang,indie pop,moody,0.29,125,0.30,0.65,0.74
-13,BIBI Vengeance,BIBI,k-pop,intense,0.75,100,0.41,0.44,0.03
-14,Baby Powder,Jenevieve,r&b,chill,0.45,78,0.73,0.80,0.24
-15,Perspective,Cafuné,indie pop,happy,0.68,141,0.70,0.61,0.38
-16,The Drug In Me Is Reimagined,Falling In Reverse,rock,melancholic,0.40,100,0.11,0.50,0.67
-17,Slow,Jackson Wang & Ciara,r&b,romantic,0.59,116,0.56,0.86,0.10
-18,The Emptiness Machine,Linkin Park,rock,intense,0.87,184,0.81,0.47,0.02
-19,All of My Life,Park Won,ballad,romantic,0.35,136,0.23,0.40,0.75
-20,Goodbye,Park Hyo Shin,ballad,melancholic,0.33,129,0.24,0.41,0.26
+id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness,subgenre,mood_tags,lyrical_theme,instrumentation_tags,language
+1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18,synth-pop,bright; uplifting; energetic,new beginnings; city mornings,synth; drums; bass,English
+2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71,lofi hip hop,calm; focused; nocturnal,late-night work,electric piano; drum machine; vinyl crackle,instrumental
+3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10,hard rock,aggressive; driving; stormy,speed and defiance,electric guitar; drums; bass,English
+4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86,chillhop,cozy; calm; reflective,rainy study sessions,piano; soft drums; rain ambience,instrumental
+5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05,dance pop,pumped; powerful; motivating,workout and perseverance,synth; kick drum; bass,English
+6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92,space ambient,dreamy; weightless; meditative,wonder and solitude,pads; synth; soft piano,instrumental
+7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89,cafe jazz,warm; mellow; easygoing,everyday moments,upright bass; piano; brushed drums; saxophone,instrumental
+8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22,retrowave,nostalgic; brooding; cinematic,night driving and city lights,analog synth; drum machine; bass,instrumental
+9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78,lofi hip hop,steady; calm; concentrated,deep work,electric piano; mellow drums; soft bass,instrumental
+10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35,bedroom pop,breezy; joyful; carefree,summer nights with friends,guitar; synth; drums,English
+11,To the Bone,Pamungkas,pop,happy,0.73,140,0.94,0.67,0.51,indie pop,warm; devoted; cheerful,deep love and commitment,acoustic guitar; drums; bass,English
+12,Shouldn't Be,Luke Chiang,indie pop,moody,0.29,125,0.30,0.65,0.74,bedroom pop,wistful; introspective; hazy,unrequited feelings,acoustic guitar; soft synth; light drums,English
+13,BIBI Vengeance,BIBI,k-pop,intense,0.75,100,0.41,0.44,0.03,dark pop,fierce; vengeful; sultry,revenge and betrayal,bass; synth; drums,Korean
+14,Baby Powder,Jenevieve,r&b,chill,0.45,78,0.73,0.80,0.24,neo soul,smooth; sensual; laid-back,flirtation and attraction,electric piano; bass; drum machine,English
+15,Perspective,Cafuné,indie pop,happy,0.68,141,0.70,0.61,0.38,bedroom pop,dreamy; upbeat; bittersweet,finding perspective in love,guitar; synth; drums,English
+16,The Drug In Me Is Reimagined,Falling In Reverse,rock,melancholic,0.40,100,0.11,0.50,0.67,pop punk,haunted; raw; vulnerable,addiction and a loved one's pull,piano; acoustic guitar; strings,English
+17,Slow,Jackson Wang & Ciara,r&b,romantic,0.59,116,0.56,0.86,0.10,contemporary r&b,sensual; smooth; intimate,slow-burn desire,bass; synth; drum machine,English
+18,The Emptiness Machine,Linkin Park,rock,intense,0.87,184,0.81,0.47,0.02,alternative metal,urgent; cathartic; angry,numbness and emotional emptiness,electric guitar; drums; bass; electronics,English
+19,All of My Life,Park Won,ballad,romantic,0.35,136,0.23,0.40,0.75,ballad,tender; heartfelt; yearning,lifelong devotion,piano; strings; acoustic guitar,Korean
+20,Goodbye,Park Hyo Shin,ballad,melancholic,0.33,129,0.24,0.41,0.26,ballad,sorrowful; yearning; emotional,farewell and lingering love,piano; strings; drums,Korean
+21,You're My Everything,John Park,soundtrack,romantic,0.30,76,0.35,0.40,0.85,ost ballad,tender; heartfelt; nostalgic,devoted love,acoustic guitar; harmonica; piano; strings,English
+22,My Silly Boy,Isabel van Gelder,pop,romantic,0.33,138,0.73,0.62,0.70,pop rock,wistful; disappointed; intimate,relationship growing distant,electric guitar; bass; drums,English
+23,Misery Business,Paramore,rock,intense,0.91,173,0.73,0.52,0.01,pop punk,energetic; defiant; confrontational,love triangle; romantic rivalry,guitar; drums,English
+24,Scott and Zelda,BIBI,k-pop,romantic,0.45,156,0.45,0.60,0.40,bubblegum pop,playful; romantic; infatuated,romantic crush,piano; synth; organ; bass; drums,Korean
+25,My Love Beside Me,DAVICHI,ballad,melancholic,0.35,120,0.20,0.35,0.70,ballad,yearning; tender; sorrowful,enduring love and longing,piano; strings; acoustic guitar,Korean
+26,I'm Sorry,Kim Gun-mo & Uji,ballad,melancholic,0.40,80,0.25,0.40,0.60,ballad,regretful; emotional; apologetic,apology after a breakup,piano; strings; guitar; drums,Korean
+27,Snow,SURL,rock,melancholic,unknown,172,unknown,unknown,unknown,modern rock,lonely; wistful; wintery,loneliness during special days such as Christmas,guitar; bass; drums,Korean
+28,For the First Time,The Script,rock,melancholic,0.65,87,0.30,0.55,0.15,pop rock,heartfelt; hopeful; weary,struggling together through hard times,piano; electric guitar; drums; bass,English
