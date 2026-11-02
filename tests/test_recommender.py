@@ -59,3 +59,17 @@ def test_explain_recommendation_returns_non_empty_string():
     explanation = rec.explain_recommendation(user, song)
     assert isinstance(explanation, str)
     assert explanation.strip() != ""
+
+
+def test_diversity_penalty_demotes_repeated_artist():
+    from src.recommender import recommend_songs
+
+    songs = [
+        {"title": "A1", "artist": "X", "genre": "pop", "mood": "happy", "energy": 0.8},
+        {"title": "A2", "artist": "X", "genre": "pop", "mood": "happy", "energy": 0.8},
+        {"title": "B1", "artist": "Y", "genre": "pop", "mood": "happy", "energy": 0.6},
+    ]
+    prefs = {"genre": "pop", "mood": "happy", "energy": 0.8}
+    results = recommend_songs(prefs, songs, k=3)
+    assert [s["title"] for s, _, _ in results] == ["A1", "B1", "A2"]
+    assert "artist repetition penalty" in results[2][2]
