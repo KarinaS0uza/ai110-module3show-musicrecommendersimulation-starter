@@ -2,7 +2,11 @@
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
+This project implements a content-based music recommender over a 28-song
+catalog. It scores core genre, mood, and energy preferences, can use five
+optional advanced song attributes, offers four ranking strategies, and applies
+diversity penalties while building the top results. Recommendations include
+the score reasons in a wrapped terminal table.
 
 Your goal is to:
 
@@ -11,53 +15,34 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
-
 ---
 
 ## How The System Works
 
-Explain your design in plain language.
-
-Some prompts to answer:
-
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
-
-You can include a simple diagram or bullet list if helpful.
-
-Real-world recommendation systems combine signals such as listening history,
-behavior from similar users, and attributes of the available music. This
-simulation uses a simpler content-based approach that compares each song's
-genre, mood, energy, tempo, and acousticness with a user profile. My version
-prioritizes emotionally expressive ballads, especially songs that feel
-romantic, yearning, bittersweet, moody, or melancholic. Because the dataset
-does not directly measure lyrical emotion, the simulation approximates this
-taste through the `ballad` genre and the available mood labels. A ballad match
-receives the most weight, while energy remains flexible because I enjoy both
-calm and powerful arrangements. After scoring every song, the system ranks the
-songs from highest to lowest score and returns the top matches.
+Real-world recommenders can use listening history, behavior from similar users,
+and details about songs. This simulation is a smaller content-based system. Its
+default strategy scores exact genre and mood matches and energy similarity; the
+other strategies change the relative weights. Optional advanced preferences
+can also match subgenre, mood tags, lyrical theme, instrumentation, and language.
+The top-`K` list is selected greedily with artist and non-preferred-genre
+diversity penalties. Genre remains a scoring signal, not a hard filter.
 
 ### Data Flow Plan
 
 ```mermaid
 flowchart LR
-    A["Input: User Preferences<br/>favorite genre, favorite mood,<br/>target energy, and K"] --> B["Load songs.csv"]
+    A["Input: Preferences, strategy,<br/>and requested K"] --> B["Load songs.csv"]
     B --> C{"For each song"}
-    C --> D["Apply scoring logic<br/>+2.0 genre match<br/>+1.0 mood match<br/>+ energy similarity"]
-    D --> E["Store the song,<br/>score, and reasons"]
+    C --> D["Score core and optional<br/>feature matches; record reasons"]
+    D --> E["Keep scored candidates"]
     E --> C
-    C -->|All songs scored| F["Rank songs by score<br/>from highest to lowest"]
-    F --> G["Output:<br/>Top K Recommendations"]
+    C -->|All songs scored| F["Greedily select top K;<br/>apply diversity penalties"]
+    F --> G["Output table with scores<br/>and reasons"]
 ```
 
-The input is the user's preference profile. The process loops through every
-song in `data/songs.csv`, judges it with the scoring logic, and stores its score
-and matching reasons. The output ranks all scored songs and returns the top
-`K` recommendations.
+The input includes the user's preferences and selected strategy. The program
+scores each song and records match reasons, then iteratively builds the top-`K`
+list using adjusted scores and displays the results in a table.
 
 ### Song Features
 
@@ -67,48 +52,56 @@ Each `Song` stores the attributes available in `data/songs.csv`:
 - `genre` and `mood` describe the song categorically.
 - `energy`, `tempo_bpm`, `valence`, `danceability`, and `acousticness` describe
   numerical musical characteristics.
+- `subgenre`, `mood_tags`, `lyrical_theme`, `instrumentation_tags`, and
+  `language` provide optional, more detailed matching attributes.
 
-The first version of the scoring rule uses `genre`, `mood`, and `energy`. The
-remaining attributes can support later experiments without claiming that the
-system understands lyrics, vocal emotion, instrumentalness, or beat
-consistency.
+The five advanced attributes add one point when a provided preference matches.
+Multi-value fields use semicolon-separated tags. An `unknown` value does not
+match. These labels are metadata supplied in the CSV; the recommender does not
+infer lyrics or audio content itself.
 
 ### User Profile Features
 
 For this simulation, the `UserProfile` stores:
 
 - Favorite genre: `ballad`
-- Favorite mood: `romantic`, with melancholic and moody songs also representing
-  the broader taste being modeled
-- Target energy: `0.45`, with a low scoring weight so calm and powerful songs
-  can both rank well
-- Target tempo: `75` BPM
-- Acoustic preference: `True`
+- Favorite mood: `romantic`
+- Target energy: `0.45`
+
+The built-in CLI profiles use these three core fields. A profile can also
+provide any of the five advanced preferences; omitted preferences do not affect
+the score. Tempo, valence, danceability, and acousticness are stored but are not
+currently used for scoring.
 
 ### Finalized Algorithm Recipe
 
-1. Load the songs from `data/songs.csv` and read the user's favorite genre,
-   favorite mood, target energy, and requested number of recommendations (`K`).
-2. Loop through every song and start its score at `0`.
-3. Add **2.0 points** when the song's genre matches the user's favorite genre.
-4. Add **1.0 point** when the song's mood matches the user's favorite mood.
-5. Add up to **1.0 energy-similarity point** based on how close the song's
-   energy is to the user's target energy:
+1. Load songs and read the user's preferences, selected strategy, and requested
+   number of recommendations (`K`).
+2. Score each song's core preferences using the selected strategy's weights:
+   `current` (genre 1.0, mood 1.0, energy 2.0), `genre-first` (3.0, 1.0,
+   0.5), `mood-first` (1.0, 3.0, 0.5), or `energy-focused` (0.5, 0.5, 3.0).
+3. Add **1.0 point per matching advanced preference** when provided: subgenre,
+   lyrical theme, any matching mood tag, any matching instrumentation tag, or
+   any matching language.
+4. Energy similarity uses the selected strategy's energy weight:
 
    ```text
    energy similarity = max(0, 1 - abs(song energy - target energy) / 0.5)
+   energy points = strategy energy weight * energy similarity
    ```
 
-6. Save the song's total score and the reasons it earned points.
-7. Sort all songs from highest to lowest score and return the top `K` songs.
+5. Build the top-`K` list greedily. Subtract 1.5 for each previously selected
+   song by the same artist and 0.5 for each previously selected song from the
+   same genre, except the user's preferred genre. Include each deduction in the
+   reason text and return adjusted scores.
 
 ### Potential Biases
 
-This system may over-prioritize genre because a genre match is worth twice as
-much as a mood match. It may therefore overlook a great song that matches the
-user's mood and energy but belongs to a different genre. It also relies on a
-small catalog and exact labels, so underrepresented genres and related moods
-such as `melancholic` or `moody` may receive less attention.
+Genre, mood, and advanced attributes rely on exact normalized labels, so related
+terms may not match. Genre is a bonus rather than a filter. The diversity rule
+can lower repeated-artist and non-preferred-genre scores, while exempting the
+preferred genre. Song metadata can be subjective or unverified, and the
+catalog remains small compared with a real music service.
 
 ---
 
@@ -122,18 +115,33 @@ such as `melancholic` or `moody` may receive less attention.
    python -m venv .venv
    source .venv/bin/activate      # Mac or Linux
    .venv\Scripts\activate         # Windows
+   ```
 
 2. Install dependencies
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 3. Run the app:
 
-```bash
-python -m src.main
-```
+   ```bash
+   python -m src.main
+   ```
+
+   Choose a ranking strategy with `--strategy`: `current`, `genre-first`,
+   `mood-first`, or `energy-focused`. For example:
+
+   ```bash
+   python -m src.main --strategy mood-first
+   ```
+
+   Recommendations display in a wrapped ASCII table with rank, song, artist,
+   adjusted score, and the reasons behind each score.
+
+   Top-`K` selection applies an artist-repeat penalty and a smaller repeated-
+   genre penalty. The listener's preferred genre is exempt from the genre
+   penalty, and explanations show any diversity deductions.
 
 ### Running Tests
 
@@ -150,83 +158,46 @@ You can add more tests in `tests/test_recommender.py`.
 ## Sample Recommendation Output
 
 ```text
-Loaded songs: 20
-
-==================================================
-TOP MUSIC RECOMMENDATIONS
-==================================================
-
-1. Sunrise City — Neon Echo
-   Final score: 3.96
-   Reasons:
-     • genre match (+2.0)
-     • mood match (+1.0)
-     • energy similarity (+0.96)
-
-2. To the Bone — Pamungkas
-   Final score: 3.86
-   Reasons:
-     • genre match (+2.0)
-     • mood match (+1.0)
-     • energy similarity (+0.86)
-
-3. Gym Hero — Max Pulse
-   Final score: 2.74
-   Reasons:
-     • genre match (+2.0)
-     • energy similarity (+0.74)
-
-4. Rooftop Lights — Indigo Parade
-   Final score: 1.92
-   Reasons:
-     • mood match (+1.0)
-     • energy similarity (+0.92)
-
-5. Perspective — Cafuné
-   Final score: 1.76
-   Reasons:
-     • mood match (+1.0)
-     • energy similarity (+0.76)
-
-==================================================
+Loaded songs: 28
+Ranking mode: Current scoring
++-----+--------------------------+--------------------+---------+--------------------------------------------------+
+| #   | Song                     | Artist             | Score   | Reasons                                          |
++-----+--------------------------+--------------------+---------+--------------------------------------------------+
+| 1   | Example song             | Example artist     | 3.50    | genre match (+1.0); mood match (+1.0); energy... |
++-----+--------------------------+--------------------+---------+--------------------------------------------------+
 ```
+
+The row is illustrative; scores and reasons depend on the selected profile,
+strategy, and catalog metadata. The actual output wraps long table cells.
 
 ---
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
-
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+I tested the Weight Shift: genre went from 2 points to 1, and energy similarity
+was doubled. The top-five order changed for Deep Intense Rock and Chill Lofi,
+but stayed the same for Ballad / Romantic and High-Energy Pop. The experiment
+changed the rankings, but without user feedback or labeled preferences I cannot
+say whether they became more accurate. The detailed comparisons and profile
+outputs are in the Evaluation section of `model_card.md`.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+The catalog has 28 songs and remains small. Genre is a scoring bonus rather
+than a filter, and exact labels can miss related preferences. The scorer stores
+tempo, valence, danceability, and acousticness but does not use them. It also
+does not learn from listening history or feedback, and its recommendations
+depend on the accuracy of the CSV metadata.
 
 ---
 
 ## Reflection
 
-Read and complete `model_card.md`:
+The personal reflection is in `model_card.md`:
 
 [**Model Card**](model_card.md)
-
-Write 1 to 2 paragraphs here about what you learned:
-
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
 
 
 
